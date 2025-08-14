@@ -13,6 +13,8 @@ builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList")
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 var app = builder.Build();
 
+app.UseExceptionHandler(exceotionHandlerApp => exceotionHandlerApp.Run(async context => await TypedResults.Problem().ExecuteAsync(context)));
+
 var todoItems = app.MapGroup("/todoitems");
 
 todoItems.MapGet("/", GetAllTodos);

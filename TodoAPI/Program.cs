@@ -2,6 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using TodoAPI;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.WriteIndented = true;
+    options.SerializerOptions.IncludeFields = true;
+});
+
 builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 var app = builder.Build();
@@ -61,7 +68,7 @@ static async Task<IResult> UpdateTodo(int id, TodoItemDTO todoItemDTO, TodoDb db
     todo.IsComplete = todoItemDTO.IsComplete;
 
     await db.SaveChangesAsync();
-    
+
     return TypedResults.NoContent();
 }
 

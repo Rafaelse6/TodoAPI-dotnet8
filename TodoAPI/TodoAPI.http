@@ -9,3 +9,27 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{TodoAPI_HostAddress}}/todoitems
+
+###
+
+@id=1
+GET {{TodoAPI_HostAddress}}/todoitems/{{id}}
+
+###
+
+PUT {{TodoAPI_HostAddress}}/todoitems/{{id}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "feed fish",
+  "isComplete": false
+}
+
+###
+
+DELETE {{TodoAPI_HostAddress}}/todoitems/1
+
+###

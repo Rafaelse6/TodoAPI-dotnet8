@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using TodoAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigureHttpJsonOptions(options =>
+var options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
 {
-    options.SerializerOptions.WriteIndented = true;
-    options.SerializerOptions.IncludeFields = true;
-});
+    WriteIndented = true,
+};
 
 builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -17,12 +17,12 @@ app.UseExceptionHandler(exceotionHandlerApp => exceotionHandlerApp.Run(async con
 
 var todoItems = app.MapGroup("/todoitems");
 
-todoItems.MapGet("/", GetAllTodos);
-todoItems.MapGet("/complete", GetCompletedTodos);
-todoItems.MapGet("/{id}", GetTodo);
-todoItems.MapPost("/", CreateTodo);
-todoItems.MapPut("/{id}", UpdateTodo);
-todoItems.MapDelete("/{id}", DeleteTodo);
+todoItems.MapGet("/", GetAllTodos).WithName("Get all todos");
+todoItems.MapGet("/complete", GetCompletedTodos).WithName("All completed todos");
+todoItems.MapGet("/{id}", GetTodo).WithName("Get one todo");
+todoItems.MapPost("/", CreateTodo).WithName("Create a new todo");
+todoItems.MapPut("/{id}", UpdateTodo).WithName("Update and todo");
+todoItems.MapDelete("/{id}", DeleteTodo).WithName("Delete a todo");
 
 app.Run();
 
